@@ -1,0 +1,14 @@
+{
+  "pipeline": {
+    "name": "reliable-static-site",
+    "roleArn": "REPLACE_CODEPIPELINE_ROLE_ARN",
+    "artifactStore": {"type": "S3", "location": "REPLACE_ARTIFACT_BUCKET"},
+    "version": 1,
+    "stages": [
+      {"name": "Source", "actions": [{"name": "GitHub", "actionTypeId": {"category": "Source", "owner": "AWS", "provider": "CodeStarSourceConnection", "version": "1"}, "configuration": {"ConnectionArn": "REPLACE_CONNECTION_ARN", "FullRepositoryId": "REPLACE_OWNER/REPLACE_REPO", "BranchName": "main", "DetectChanges": "true"}, "outputArtifacts": [{"name": "SourceArtifact"}], "runOrder": 1}]},
+      {"name": "BuildTest", "actions": [{"name": "Test", "actionTypeId": {"category": "Build", "owner": "AWS", "provider": "CodeBuild", "version": "1"}, "configuration": {"ProjectName": "reliable-site-build"}, "inputArtifacts": [{"name": "SourceArtifact"}], "outputArtifacts": [{"name": "BuildArtifact"}], "runOrder": 1}]},
+      {"name": "Deploy", "actions": [{"name": "Deploy", "actionTypeId": {"category": "Build", "owner": "AWS", "provider": "CodeBuild", "version": "1"}, "configuration": {"ProjectName": "reliable-site-deploy"}, "inputArtifacts": [{"name": "BuildArtifact"}], "outputArtifacts": [{"name": "DeployArtifact"}], "runOrder": 1}]},
+      {"name": "Verify", "actions": [{"name": "Verify", "actionTypeId": {"category": "Build", "owner": "AWS", "provider": "CodeBuild", "version": "1"}, "configuration": {"ProjectName": "reliable-site-verify"}, "inputArtifacts": [{"name": "DeployArtifact"}], "runOrder": 1}]}
+    ]
+  }
+}

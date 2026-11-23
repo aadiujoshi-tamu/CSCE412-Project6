@@ -1,0 +1,8 @@
+version: 0.2
+phases:
+  build:
+    commands:
+      - "python scripts/verify_production.py --domain $SITE_DOMAIN --sha $CODEBUILD_RESOLVED_SOURCE_VERSION --bucket $WEBSITE_BUCKET"
+      - "aws s3 cp artifacts/release.zip s3://$ARTIFACT_BUCKET/known-good/$CODEBUILD_RESOLVED_SOURCE_VERSION.zip"
+      - "echo '{\"sha\": \"'$CODEBUILD_RESOLVED_SOURCE_VERSION'\"}' > known-good.json"
+      - "aws s3 cp known-good.json s3://$ARTIFACT_BUCKET/known-good.json"

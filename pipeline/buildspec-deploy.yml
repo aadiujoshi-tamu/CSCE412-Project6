@@ -1,0 +1,8 @@
+version: 0.2
+phases:
+  build:
+    commands:
+      - "aws s3 cp artifacts/release.zip s3://$ARTIFACT_BUCKET/releases/$CODEBUILD_RESOLVED_SOURCE_VERSION.zip"
+      - "bash scripts/deploy.sh"
+      - "bash scripts/invalidate_cache.sh"
+      - "python scripts/record_status.py --sha $CODEBUILD_RESOLVED_SOURCE_VERSION --status deployed"
