@@ -1,4 +1,5 @@
 .env
+pat
 *.pem
 __pycache__/
 .pytest_cache/
@@ -6,3 +7,4 @@ __pycache__/
 artifacts/
 deployments/*.local.json
 ignore/
+pat
