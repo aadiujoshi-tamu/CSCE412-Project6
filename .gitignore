@@ -1,0 +1,8 @@
+.env
+*.pem
+__pycache__/
+.pytest_cache/
+.venv/
+artifacts/
+deployments/*.local.json
+ignore/
